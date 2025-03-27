@@ -1,0 +1,8 @@
+Columns require indexing in order, product, category table are
+
+order - order_id
+product - product_id
+category - category_id
+category - parent_category_id
+parent-category - parent_category_id
+parent-category - category_id
