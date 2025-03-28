@@ -31,27 +31,12 @@ CALL average_sales(03,2025);
 -- Start date and end date will be input parameter. Put validation on input dates like start date is less than end date. 
 -- If start date is greater than end date take first date of month as start date.
 
-SELECT 
-    oi.order_item_id,
-    p.product_id,
-    o.order_id,
-    p.product_name,
-    oi.price_at_purchase,
-    o.order_date,
-    oi.status
-FROM
-    order_item oi
-        JOIN
-    orders o ON oi.order_id = o.order_id
-        JOIN
-    product p ON p.product_id = oi.product_id;
-
 DELIMITER $$
 CREATE PROCEDURE product_status(begin_date DATE, end_date DATE)
 BEGIN
 
 IF begin_date>end_date THEN
-SET begin_date = (CURRENT_DATE - INTERVAL DAY(end_date) DAY);
+SET begin_date = (end_date - INTERVAL DAY(end_date-1) DAY);
 END IF;
 
 SELECT 
@@ -69,8 +54,10 @@ FROM
         JOIN
     product p ON p.product_id = oi.product_id
 WHERE
-	o.order_date <=end_month AND o.order_date >= begin_month;
+	o.order_date BETWEEN begin_date AND end_date;
 END$$
 DELIMITER ;
 
+DROP PROCEDURE 	product_status;
 
+CALL product_status("2025-05-01", "2025-04-02");
