@@ -1,6 +1,8 @@
 -- Create all tables of eCommerce Application: StoreFront covered in Session 1 Assignments. 
 -- (Write all CREATE commands in a SQL file and run that SQL File).--
 
+
+
 CREATE DATABASE StoreFront;
 
 USE StoreFront;
@@ -11,6 +13,7 @@ CREATE TABLE category (
     parent_category_id INT,
     FOREIGN KEY (parent_category_id)
         REFERENCES category (category_id)
+        ON DELETE SET NULL
 );
 
 -- Create the Product table.
@@ -29,6 +32,7 @@ CREATE TABLE prod_cat(
     category_id INT,
     FOREIGN KEY (product_id) REFERENCES product(product_id),
     FOREIGN KEY (category_id) REFERENCES category(category_id)
+    ON DELETE CASCADE
 );
 
 CREATE TABLE image (
@@ -36,7 +40,7 @@ CREATE TABLE image (
     image_url VARCHAR(200),
     product_id INT NOT NULL,
     FOREIGN KEY (product_id)
-        REFERENCES product (product_id)
+        REFERENCES product (product_id) ON DELETE CASCADE
 );
 
 CREATE TABLE user (
@@ -52,7 +56,7 @@ CREATE TABLE shipping_address (
     address VARCHAR(100) NOT NULL,
     postal_code INT NOT NULL,
     FOREIGN KEY (user_id)
-        REFERENCES user (user_id)
+        REFERENCES user (user_id) ON DELETE CASCADE
 );
 
 CREATE TABLE orders (
@@ -65,6 +69,7 @@ CREATE TABLE orders (
         REFERENCES user (user_id),
     FOREIGN KEY (address_id)
         REFERENCES shipping_address (address_id)
+        ON DELETE CASCADE
 );
 
 CREATE TABLE order_item (
@@ -78,6 +83,7 @@ CREATE TABLE order_item (
         REFERENCES product (product_id),
     FOREIGN KEY (order_id)
         REFERENCES orders (order_id)
+        ON DELETE CASCADE
 );
 
 -- Write a command to display all the table names present in StoreFront.
